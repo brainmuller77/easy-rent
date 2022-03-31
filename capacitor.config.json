@@ -1,0 +1,6 @@
+{
+	"appId": "io.ionic.starter",
+	"appName": "easy-rent",
+	"webDir": "www",
+	"bundledWebRuntime": false
+}
