@@ -1,0 +1,69 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+  </ion-buttons>
+    <ion-title>add-listing</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-row class="input-position">
+         
+    <ion-col>
+      <span class = "image-upload">
+        <label for="file-input">    
+          <ion-icon slot="icon-only" name="camera" size="large"  color="medium" ></ion-icon>
+        </label>
+    
+        <input id="file-input" type="file" accept="image/*" multiple="multiple" (change)=" processImage($event)" style="display:none;"/>
+      
+       </span>
+      
+    </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col size="4" *ngFor="let image of v.images_links; let i = index;">
+        <div class="img-bg">
+          <img id="blah" [src]="image"/>
+        </div>
+        <div class="ion-text-center" style="color: red;" (click)="deleteImage(i)">
+            <small>X</small>
+        </div>
+    </ion-col>
+   
+        </ion-row>
+        <ion-item lines="none" color="light">
+          <ion-label position="floating">Itemname</ion-label>
+          <ion-input type="text" placeholder="Firstname" [(ngModel)]="itemname"></ion-input>
+        </ion-item>
+
+        <ion-item lines="none" color="light">
+          <ion-label position="floating">title</ion-label>
+          <ion-input type="text" placeholder="Firstname" [(ngModel)]="title"></ion-input>
+        </ion-item>
+
+        <ion-item lines="none" color="light">
+          <ion-label position="floating">Price</ion-label>
+          <ion-input type="number" placeholder="price" [(ngModel)]="price"></ion-input>
+        </ion-item>
+
+        <ion-item lines="none">
+          <ion-label position="floating">Negotiable</ion-label>
+         <ion-select   placeholder="negotiable"  [(ngModel)]="negotiable" >
+          <ion-select-option value="Yes">Yes</ion-select-option>
+          <ion-select-option value="No">No</ion-select-option>
+      </ion-select>
+    </ion-item>
+
+
+        <ion-item lines="none" color="light">
+          <ion-label position="floating">Details</ion-label>
+          <ion-textarea  placeholder="Details" [(ngModel)]="details"></ion-textarea>
+        </ion-item>
+
+        <ion-button expand="block" shape="round" type="submit"
+        color="tertiary">
+       Save
+      </ion-button>
+</ion-content>

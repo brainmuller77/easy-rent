@@ -1,0 +1,37 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>sign-in</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-grid>
+    <ion-row>
+      <ion-col></ion-col>
+        <ion-col text-center size-md="6" size-lg="5" size-xs="12" ion-margin>
+          <form [formGroup]="login" (ngSubmit)="onlogin()">
+                
+                <p class="errorMessage"></p>
+                <ion-card class="auth-card ion-margin" color="light"> </ion-card>
+                <ion-item class="logo" lines="none"><img src="assets/images/logo.png" style="width:96px;margin-left:39%;" /></ion-item>
+                <ion-item>
+                  <ion-label position="floating">Email</ion-label>
+                    <ion-input type="text" name="logUsername" placeholder="Username or Email"  formControlName="logUsername" required="" ion-margin></ion-input>
+                  </ion-item>
+                <ion-item>
+                  <ion-label position="floating">Password</ion-label>
+                    <ion-input type="password" name="logPassword" placeholder="Password"  formControlName="logPassword" required=""></ion-input>
+                </ion-item>
+                <ion-button expand="block" shape="round" type="submit"
+                [disabled]="!login.valid" color="tertiary">
+                Login
+              </ion-button>
+            </form>
+            <p routerLink="/pagesreset">Forgot your password?</p> 
+            <ion-button expand="block" shape="round" color="tertiary" class="ion-margin" routerLink="/sign-up">Need acount? Register here</ion-button>
+        </ion-col>
+        <ion-col></ion-col>
+    </ion-row>
+</ion-grid>
+
+</ion-content>

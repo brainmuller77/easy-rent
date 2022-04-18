@@ -1,0 +1,33 @@
+.image-upload img
+{
+    width: 80px;
+    cursor: pointer;
+}
+.image-upload > input
+{
+    display: none;
+}
+.img_box {
+    width: 100%;
+    max-width: 155px;
+    min-width: 155px;
+    margin-right: 20px;
+    height: 155px;
+    border-radius: 4px;
+    background: var(--bg-color);
+    display: flex;
+    align-items: center;
+
+    img {
+        height: 85px;
+        margin: auto;
+        display: block;
+        width: auto;
+    }
+
+    
+.img-bg {
+    width: 110px;
+    height: 110px;
+}
+}

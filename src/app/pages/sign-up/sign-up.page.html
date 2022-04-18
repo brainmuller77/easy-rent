@@ -1,0 +1,71 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>sign-up</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+
+<ion-content [fullscreen]="true" class="auth-page">
+  <ion-grid>
+    <ion-row>
+      
+      <ion-col class="ion-text-center" size-md="6" size-lg="5" size-xs="12">
+        <form [formGroup]="register" (ngSubmit)="registerUser()">
+          <!-- <div class="logo">
+            <img src="./assets/logo/logo.png" width="96px">
+          </div> -->
+        
+
+          <ion-card  class="auth-card ion-margin">
+            <ion-item lines="none" color="light">
+              <ion-label position="floating">Firstname</ion-label>
+              <ion-input type="text" placeholder="Firstname" formControlName="firstname"></ion-input>
+            </ion-item>
+            <ion-item lines="none" color="light">
+              <ion-label position="floating">Lastname</ion-label>
+              <ion-input type="text" placeholder="lastname" formControlName="lastname"></ion-input>
+            </ion-item>
+            <ion-item lines="none" color="light">
+              <ion-label position="floating">Contact</ion-label>
+              <ion-input type="text" placeholder="Contact" formControlName="phonenumber"></ion-input>
+            </ion-item>
+            
+            <ion-item lines="none" color="light">
+              <ion-label position="floating">Username</ion-label>
+              <ion-input type="text" placeholder="Username" formControlName="username"></ion-input>
+            </ion-item>
+            <ion-item lines="none" color="light">
+              <ion-label position="floating">Email</ion-label>
+              <ion-input type="email" placeholder="Email" formControlName="email"></ion-input>
+            </ion-item>
+            <ion-item lines="none" color="light" class="ion-no-inner-padding-end">
+              <ion-label position="floating">Password</ion-label>
+              <ion-input type="password" placeholder="Password" formControlName="password"></ion-input>
+            </ion-item>
+            <ion-item lines="none" color="light" class="ion-no-inner-padding-end">
+              <ion-label position="floating">Confirm Password</ion-label>
+              <ion-input type="password" placeholder="Confirm Password" formControlName="password_confirm">
+              </ion-input>
+            </ion-item>
+          </ion-card>
+
+          <ion-button expand="block" class="ion-margin-start ion-margin-end ion-margin-bottom" type="submit"
+            [disabled]="!register.valid">
+            Sign Up
+          </ion-button>
+          <span class="ion-margin"></span>
+        </form>
+
+        <p class="ion-margin">
+          <ion-text>
+            By pressing Sign Up, you agree to the service's
+            <a href="http://">Terms of Service</a>
+            and
+            <a href="http://">Privacy Policy</a>
+          </ion-text>
+        </p>
+      </ion-col>
+      
+    </ion-row>
+  </ion-grid>
+</ion-content>

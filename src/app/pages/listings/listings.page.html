@@ -1,0 +1,51 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>listings</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div *ngIf="loading" class="ion-text-center text-muted">
+    <ion-spinner name ="crescent"></ion-spinner>
+    </div>
+  <div *ngIf="!loading && content.length === 0" class="ion-text-center text-muted">
+   
+    <div>&nbsp;</div>
+    <div>&nbsp;</div>
+    No Rooms found
+</div>
+
+<ion-row  *ngIf="content.length > 0">
+                
+  <ion-searchbar [(ngModel)]="filterTerm" ></ion-searchbar>
+     
+       <ion-col offset="0" size-md="6" size-lg="5" size-xs="12" *ngFor="let a of content | filter:filterTerm" (click)="tocart(a)">
+       
+           
+           <ion-card>
+             <ion-card-header class="ion-text-uppercase">{{'a.itemname'}}</ion-card-header>
+             <ion-card-title>{{'a.brand'}}</ion-card-title>
+             <p>Price: {{'a.sellingprice'}}</p> <p >QTY LEFT: {{'a.added'}}</p>
+             <p >NUM: {{'a.quantity'}}  
+              <ion-buttons slot="start">
+           
+                <ion-button color="medium" (click)="liked(post)">
+                  <ion-icon slot="start" *ngIf="!post.isLiked" size="medium" name= "heart-outline" color="danger"></ion-icon>
+                  <ion-icon slot="start"  *ngIf="post.isLiked" size="medium" name= "heart" color="danger"></ion-icon>
+                  
+                  <small>{{post.likes}}</small>
+                  
+                </ion-button>
+                </ion-buttons>
+               </p>
+           </ion-card>
+       
+   
+         
+       </ion-col>
+       
+    
+
+</ion-row>
+
+</ion-content>
