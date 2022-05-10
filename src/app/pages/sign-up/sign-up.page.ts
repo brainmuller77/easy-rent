@@ -82,12 +82,16 @@ export class SignUpPage implements OnInit {
    /*  this.service.post(this.register.value,"register").subscribe((res:any)=>{
       console.log(res)
     }) */
+    this.loadService.presentLoading();
     this.authService.create(this.register.value).subscribe((res) => {
       if (res.message==="User created successfully") {
-        this.register.reset()
+        this.loadService.dismiss()
+        this.register.reset();
         this.router.navigate(['sign-in']);
       }else{
         this.toastService.presentToast(res.message);
+        this.loadService.alert("Error",res.message)
+        this.loadService.dismiss()
       }
     })
  }

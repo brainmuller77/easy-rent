@@ -11,19 +11,58 @@ import { catchError, map } from 'rxjs/operators';
 })
 export class AuthService {
   API_URL: string = 'http://localhost:3007/api/chatapp';
+  server: string = 'http://localhost:3007/uploads';
   headers = new HttpHeaders().set('Content-Type', 'application/json');
   currentUser = {};
   constructor(private httpClient: HttpClient,public router: Router) { }
 
   
-  register(user): Observable<any> {
+  post(user): Observable<any> {
 
-    return this.httpClient.post(`${this.API_URL}/create-user`, user).pipe(
+    return this.httpClient.post(`${this.API_URL}/post/add-post`, user).pipe(
         catchError(this.handleError)
     )
   }
 
+
+  SendMessage(body): Observable<any> {
+    return this.httpClient.post(
+      `${this.API_URL}/chat-messages/${body.senderId._id}/${body.receiverId}`,body
+    ).pipe(catchError(this.handleError));
+  }
+
+  upload(file:File): Observable<any> {
+
+    return this.httpClient.post(`${this.API_URL}/post/upload`, file).pipe(
+        catchError(this.handleError)
+    )
+  }
   
+  getPosts(): Observable<any> {
+
+    return this.httpClient.get(`${this.API_URL}/posts`).pipe(
+        catchError(this.handleError)
+    )
+  }
+
+
+  
+  GetAllMessages(senderId, receiverId): Observable<any> {
+    return this.httpClient.get(`${this.API_URL}/chat-messages/${senderId}/${receiverId}`);
+  }
+
+  MarkMessages(sender, receiver): Observable<any> {
+    return this.httpClient.get(`${this.API_URL}/receiver-messages/${sender}/${receiver}`);
+  }
+
+  MarkAllMessages(): Observable<any> {
+    return this.httpClient.get(`${this.API_URL}/mark-all-messages`);
+  }
+
+
+  imgError(e: any) {
+    e.target.src = '../assets/icon/no-image-icon.png';
+}
 
    
   create(user): Observable<any> {
@@ -33,15 +72,10 @@ export class AuthService {
     )
   }
 
-  login(user) {
-    return this.httpClient.post<any>(`${this.API_URL}/login`, user)
-      .subscribe((res: any) => {
-        localStorage.setItem('access_token', res.token)
-        this.getUserProfile(res._id).subscribe((res) => {
-          this.currentUser = res;
-          this.router.navigate(['users/profile/' + res.msg._id]);
-        })
-      })
+  login(user): Observable<any> {
+    return this.httpClient.post<any>(`${this.API_URL}/login`, user).pipe(
+      catchError(this.handleError))
+     
   }
 
   

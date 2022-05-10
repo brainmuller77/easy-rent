@@ -17,11 +17,25 @@
         </label>
     
         <input id="file-input" type="file" accept="image/*" multiple="multiple" (change)=" processImage($event)" style="display:none;"/>
-      
+      <span>Add Image</span>
        </span>
       
     </ion-col>
     </ion-row>
+    <ion-row class="input-position">
+         
+      <ion-col>
+        <span class="image-upload">
+          <label for="filePhoto">            
+            <ion-icon slot="icon-only" name="videocam" size="large"  color="medium" ></ion-icon>
+          </label>
+      
+          <input id="filePhoto" type="file" accept="video/*" (change)="onFileChange($event)" style="display:none;"/>
+        
+         </span>
+  
+      </ion-col>
+      </ion-row>
     <ion-row>
       <ion-col size="4" *ngFor="let image of v.images_links; let i = index;">
         <div class="img-bg">
@@ -31,38 +45,88 @@
             <small>X</small>
         </div>
     </ion-col>
+
+    <ion-col size="4">
+      <div> 
+          <video id="blah" [src]="imageSrc" controls="true" style="width: 100%;" *ngIf="imageSrc"></video>
+      </div>
+      <div class="ion-text-center" style="color: red;" (click)="deletevideo(i)">
+          <small>X</small>
+      </div>
+  </ion-col>
    
         </ion-row>
-        <ion-item lines="none" color="light">
-          <ion-label position="floating">Itemname</ion-label>
-          <ion-input type="text" placeholder="Firstname" [(ngModel)]="itemname"></ion-input>
+        <ion-item lines="none">
+          <ion-label position="floating">Hostel name</ion-label>
+          <ion-input type="text" id="itemname" placeholder="Item name" [(ngModel)]="itemname"></ion-input>
         </ion-item>
 
-        <ion-item lines="none" color="light">
-          <ion-label position="floating">title</ion-label>
-          <ion-input type="text" placeholder="Firstname" [(ngModel)]="title"></ion-input>
+        <ion-item lines="none">
+          <ion-label position="floating">Title</ion-label>
+          <ion-input type="text" id="title" placeholder="Title" [(ngModel)]="title"></ion-input>
         </ion-item>
 
-        <ion-item lines="none" color="light">
+        <ion-item lines="none">
           <ion-label position="floating">Price</ion-label>
-          <ion-input type="number" placeholder="price" [(ngModel)]="price"></ion-input>
+          <ion-input type="number" id="price" placeholder="price" [(ngModel)]="price"></ion-input>
         </ion-item>
 
         <ion-item lines="none">
           <ion-label position="floating">Negotiable</ion-label>
-         <ion-select   placeholder="negotiable"  [(ngModel)]="negotiable" >
+         <ion-select id="negotiable"  placeholder="Negotiable"  [(ngModel)]="negotiable" >
           <ion-select-option value="Yes">Yes</ion-select-option>
           <ion-select-option value="No">No</ion-select-option>
       </ion-select>
     </ion-item>
 
+    <ion-item lines="none">
+      <ion-label position="floating">Kitchen Available</ion-label>
+     <ion-select id="kitchen"  placeholder="Kitchen"  [(ngModel)]="kitchen" >
+      <ion-select-option value="Yes">Yes</ion-select-option>
+      <ion-select-option value="No">No</ion-select-option>
+  </ion-select>
+</ion-item>
+
+<ion-item lines="none">
+  <ion-label position="floating">Water Available</ion-label>
+ <ion-select id="water"  placeholder="Water"  [(ngModel)]="water" >
+  <ion-select-option value="Yes">Yes</ion-select-option>
+  <ion-select-option value="No">No</ion-select-option>
+</ion-select>
+</ion-item>
+
+    <ion-item lines="none">
+      <ion-label position="floating">Number of Beds</ion-label>
+     <ion-select  id="beds" placeholder="Negotiable"  [(ngModel)]="beds" >
+      <ion-select-option value="1">1</ion-select-option>
+      <ion-select-option value="2">2</ion-select-option>
+      <ion-select-option value="3">3</ion-select-option>
+      <ion-select-option value="4">4</ion-select-option>
+  </ion-select>
+</ion-item>
+
+<ion-item lines="none">
+  <ion-label position="floating">Number of People To Use Washroom</ion-label>
+
+ <ion-select  id="washroom" placeholder="Washroom"  [(ngModel)]="washroom" >
+  <ion-select-option value="1">1</ion-select-option>
+  <ion-select-option value="2">2</ion-select-option>
+  <ion-select-option value="3">3</ion-select-option>
+  <ion-select-option value="4">4</ion-select-option>
+  <ion-select-option value="5">5</ion-select-option>
+  <ion-select-option value="6">6</ion-select-option>
+  <ion-select-option value="Above 6">Above 6</ion-select-option>
+  
+</ion-select>
+</ion-item>
+
 
         <ion-item lines="none" color="light">
           <ion-label position="floating">Details</ion-label>
-          <ion-textarea  placeholder="Details" [(ngModel)]="details"></ion-textarea>
+          <ion-textarea  id= "details" placeholder="Details" [(ngModel)]="details"></ion-textarea>
         </ion-item>
 
-        <ion-button expand="block" shape="round" type="submit"
+        <ion-button expand="block" shape="round" type="submit" (click)="save()" id ="imagePostButton"
         color="tertiary">
        Save
       </ion-button>

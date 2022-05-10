@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { Storage } from '@ionic/storage-angular';
 import { ServicesService } from 'src/app/services.service';
 import { AuthService } from 'src/app/services/auth.service';
 import { LoadingService } from 'src/app/services/loading.service';
@@ -15,12 +16,14 @@ export class SignInPage implements OnInit {
   login: FormGroup;
   hide : boolean = true;
   ismyTextFieldType;
+  currentUser: any;
   constructor(
     private fb: FormBuilder,
     private router: Router, 
     public authService: AuthService,
     private toastService: ToastService,
     private loadService: LoadingService,
+    private storage: Storage,
     private serveservice: ServicesService,
    
   ) { }
@@ -37,11 +40,33 @@ export class SignInPage implements OnInit {
         Validators.maxLength(150)
       ])
     });
-  //  await this.storage.create();
+  await this.storage.create();
     }
 
     onlogin() {
-      this.authService.login(this.login.value)
-    }
+      
+      this.loadService.presentLoading();
 
+      this.authService.login(this.login.value).subscribe((res: any) => {
+      
+      if(res['message']==="Login successful"){
+        this.loadService.dismiss()
+        this.toastService.presentToast("Login Success");
+        localStorage.setItem('access_token', res.token)
+        this.storage.set('user', res.token)
+          this.storage.set('session_storage',res.user);
+          this.router.navigate(['listings']);
+       // })
+    
+      }else{
+        this.toastService.presentToast(""+res['message'])
+      }
+      if(!res){
+        this.loadService.alert(this.authService.handleError,this.authService.handleError(res));
+      
+      }
+
+    })
+
+}
 }

@@ -1,6 +1,16 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>listings</ion-title>
+    <ion-item>
+    <ion-title>Welcome @{{user.username}}</ion-title>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-buttons slot="end">
+     <ion-avatar>
+       <img [src]="server+user.profilePic">
+     </ion-avatar>
+      </ion-buttons>
+    </ion-item>
   </ion-toolbar>
 </ion-header>
 
@@ -19,25 +29,31 @@
                 
   <ion-searchbar [(ngModel)]="filterTerm" ></ion-searchbar>
      
-       <ion-col offset="0" size-md="6" size-lg="5" size-xs="12" *ngFor="let a of content | filter:filterTerm" (click)="tocart(a)">
+   <ion-col offset="0" size-md="6" size-lg="5" size-xs="12" *ngFor="let a of content | filter:filterTerm">
        
            
            <ion-card>
-             <ion-card-header class="ion-text-uppercase">{{'a.itemname'}}</ion-card-header>
-             <ion-card-title>{{'a.brand'}}</ion-card-title>
-             <p>Price: {{'a.sellingprice'}}</p> <p >QTY LEFT: {{'a.added'}}</p>
-             <p >NUM: {{'a.quantity'}}  
+             <div (click)="gotoEditPage(a)">
+             <ion-card-header class="ion-text-uppercase">{{a.itemname}}</ion-card-header>
+             <img src={{a.Image[0]}} alt="{{a.title}}" (error)="authservice.imgError($event)"/>
+             <ion-card-title>{{a.title}}</ion-card-title>
+             <p>Price: {{a.price}}</p> <p>Beds Left: {{a.beds}}</p>
+             <p >Negotiable: {{a.negotiable}} </p>
+            </div>
+             <ion-item> 
               <ion-buttons slot="start">
            
-                <ion-button color="medium" (click)="liked(post)">
-                  <ion-icon slot="start" *ngIf="!post.isLiked" size="medium" name= "heart-outline" color="danger"></ion-icon>
-                  <ion-icon slot="start"  *ngIf="post.isLiked" size="medium" name= "heart" color="danger"></ion-icon>
+                <ion-button color="medium" (click)="liked(a)">
+                  <ion-icon slot="start" size="medium" name= "heart-outline" color="danger"></ion-icon>
+                  <ion-icon slot="start" size="medium" name= "heart" color="danger"></ion-icon>
                   
-                  <small>{{post.likes}}</small>
+                  <small>{{'post.likes'}}</small>
                   
-                </ion-button>
+                </ion-button> 
+                <ion-button><ion-icon name="call"></ion-icon></ion-button> 
+                <ion-button *ngIf="a.username != username" (click)="gotoMessage(a)"><ion-icon name="chatbox-outline"></ion-icon></ion-button>
                 </ion-buttons>
-               </p>
+             </ion-item>
            </ion-card>
        
    
@@ -47,5 +63,11 @@
     
 
 </ion-row>
+<ion-fab class="animate__animated animate__zoomInUp" vertical="bottom" horizontal="end" slot="fixed">
+  <ion-fab-button (click)="add_room()">
+      <span>+</span>
+  </ion-fab-button>
+</ion-fab>
+
 
 </ion-content>
