@@ -44,6 +44,10 @@ export class SignUpPage implements OnInit {
          Validators.required,
          Validators.maxLength(150)
        ]),
+       usertype: this.fb.control('', [
+        Validators.required,
+        Validators.maxLength(150)
+      ]),
        email: this.fb.control('', [
          Validators.required,
          Validators.email

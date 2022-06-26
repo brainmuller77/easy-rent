@@ -1,0 +1,88 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title *ngIf="!showSearchbar">
+      {{'Inbox'}}
+     
+    </ion-title>
+    <ion-searchbar [formControl]="searchMessageList" showCancelButton="always" cancelButtonIcon="arrow-back-outline"
+      (ionCancel)="showSearchbar = false" placeholder="Search" *ngIf="showSearchbar">
+    </ion-searchbar>
+    <ion-buttons slot="end">
+      <ion-button *ngIf="!isIos && !showSearchbar" (click)="(showSearchbar = true)">
+        <ion-icon slot="icon-only" name="search-outline"></ion-icon>
+      </ion-button>
+    
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content pullingIcon="arrow-down-outline"></ion-refresher-content>
+  </ion-refresher>
+
+  <ion-searchbar [formControl]="searchMessageList" cancelButtonIcon="arrow-back-outline"
+    placeholder="Search" *ngIf="isIos">
+  </ion-searchbar>
+
+  <ion-list lines="none" class="ion-padding-bottom" *ngIf="chatList['receiverId'] != 'null'">
+    <ion-item-sliding *ngFor="let user of chatList">
+      <ion-item button detail="false" (click)="gotoMessage(user.receiverId)" routerdirection="forward">
+        <ion-avatar slot="start">
+          <img [src]="user.receiverId.Image[0]">
+        </ion-avatar>
+        <ion-label>
+          <h2>{{user.receiverId.title}} by {{user.receiverId.itemname}} {{'Hostel'}}</h2>
+          <span>
+            <ion-icon name="done-all" class="read" *ngIf="user.msgId.message[user.msgId.message.length - 1].isRead"></ion-icon>
+            <strong>{{user.msgId.message[user.msgId.message.length - 1].body.substr(0, 10)}}...</strong>
+          </span>
+          </ion-label>
+          <ion-buttons slot="end">
+          <ion-button>
+            {{GetTime(user.msgId.message[user.msgId.message.length - 1].createdAt)}}
+          </ion-button>
+        </ion-buttons>
+        
+        <ion-chip class="msg" *ngIf="CheckIfFalse(user.msgId.message, user.receiverId.username) > 0">
+          {{CheckIfFalse(user.msgId.message, user.receiverId.username)}}
+        </ion-chip>
+        
+      </ion-item>
+
+      <ion-item-options side="start">
+        <ion-item-option color="medium">
+          <ion-icon slot="start" name="volume-mute-outline"></ion-icon>
+          <ion-label>
+            Close
+          </ion-label>
+        </ion-item-option>
+        <ion-item-option color="danger" expandable>
+          <ion-icon slot="start" name="trash-outline"></ion-icon>
+          <ion-label>
+            More
+          </ion-label>
+        </ion-item-option>
+      </ion-item-options>
+
+      <ion-item-options side="end">
+        <ion-item-option color="medium">
+          <ion-icon slot="start" name="volume-mute-outline"></ion-icon>
+          <ion-label>
+            Mute
+          </ion-label>
+        </ion-item-option>
+        <ion-item-option color="danger" expandable>
+          <ion-icon slot="start" name="trash-outline"></ion-icon>
+          <ion-label>
+            Delete
+          </ion-label>
+        </ion-item-option>
+      </ion-item-options>
+    </ion-item-sliding>
+  </ion-list>
+
+</ion-content>

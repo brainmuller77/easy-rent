@@ -4,6 +4,11 @@
       <ion-button (click)=dismiss();>
         <ion-icon name="close" color="success"  slot="start"></ion-icon>
       </ion-button>
+      <ion-avatar>
+        <div class="img-bg">
+          <img src={{item.Image[0]}} alt="{{item.title}}" (error)="authservice.imgError($event)"/>
+        </div>
+      </ion-avatar>
     </ion-buttons>
     <ion-title>{{item.username}}</ion-title>
   </ion-toolbar>
@@ -11,21 +16,20 @@
 
 <ion-content  [scrollY]="isAllowScroll" [scrollEvents]="true" (ionScrollStart)="logScrollStart()"
 (ionScroll)="logScrolling($event)" (ionScrollEnd)="logScrollEnd()">
-<ion-card class="messages-card">
+<ion-card>
   <div (click)="gotoEditPage(item)">
   <ion-card-header class="ion-text-uppercase">{{item.title}}</ion-card-header>
   <p><ion-chip>Price: {{item.price}}</ion-chip><ion-chip>Beds Left: {{item.beds}}</ion-chip>
     <ion-chip>Negotiable: {{item.negotiable}}</ion-chip> </p>
-  <img src={{item.Image[0]}} alt="{{item.title}}" (error)="authservice.imgError($event)"/>
-  
  </div>
  </ion-card>
+ 
 <ion-item-group class="messages-item-group" *ngFor="let chat of chatsmessages">
 
   <!-- Date message divider -->
   <ion-item-divider sticky class="message-divider" [ngClass]="{'scrolling': pageScrolling}">
     <ion-label>
-      {{chat.date}}
+      {{date}}
     </ion-label>
   </ion-item-divider>
 
@@ -51,8 +55,9 @@
     <ng-container *ngIf="chat.sendername === username">
       <ion-item lines="none" class="message-me">
         <div class="message-container" slot="end">
-          <span class="text" [innerHTML]="chat.post_body"></span>
-          <small class="time">{{chat.chatdate}}</small>
+          <span class="text" [innerHTML]="chat.body"></span>
+          <small class="time">{{returned?chatdate(chat.createdAt):chat.chatdate}}</small>
+         
         </div>
       </ion-item>
     </ng-container>
@@ -71,7 +76,7 @@
     <ion-row class="comment-area">
  <ion-textarea placeholder="Enter your message..." [(ngModel)]="postData.message" 
  formControlName="messageControl"></ion-textarea>
- <ion-button type="submit" [disabled]="!message.valid">Send</ion-button>  
+ <ion-button type="submit" [disabled]="!message.valid"><ion-spinner *ngIf="load" name="lines"></ion-spinner> {{load?'':'Send'}}</ion-button>  
       </ion-row>
     </ion-grid>
     </form>   

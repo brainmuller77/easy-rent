@@ -7,28 +7,40 @@
     </ion-buttons>
     <ion-title>{{ item.username }}</ion-title>
     <ion-buttons slot="end">
-      <ion-button><ion-icon name="call"></ion-icon></ion-button> 
-      <ion-button *ngIf="!item.username"><ion-icon name="chatbox-outline"></ion-icon></ion-button>
+      <ion-button (click)="open(item)"><ion-icon name="videocam"></ion-icon></ion-button> 
+      <ion-button (click)="call()"><ion-icon name="call"></ion-icon></ion-button> 
+      <ion-button (click)="payWithPaypal()"><ion-icon name="cash"></ion-icon></ion-button>
       </ion-buttons>
-  </ion-toolbar>
+  </ion-toolbar>   
+  <div id="paypal-button-container"></div>
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <ion-card-header class="ion-text-uppercase">{{item.title}}</ion-card-header>
-  <img src={{item.Image[0]}} alt="{{item.title}}" (error)="authservice.imgError($event)"/>
+  <ion-card-header class="ion-text-uppercase"><ion-note>{{item.title}}</ion-note></ion-card-header>
+  <swiper [config]="{ slidesPerView: 1, loop: true, initialSlide: 1,autoplay: {delay:4000},
+  pagination : {el: '.swiper-pagination',type: 'progressbar' ,clickable: true} }" 
+  pager="true" mode="ios"  [navigation]="true"
+  class="mySwiper2" (swiper)="thumbsSwiper = $event">
+    <ng-template swiperSlide *ngFor="let slide of item.Image">
+    <img src={{slide}} alt="{{item.title}}"  (error)="authservice.imgError($event)"/>
+    </ng-template>
+    
+  </swiper>
+  
   
   <div>
-    <ion-label color="primary">PRICE:<ion-card-title>{{item.price}}</ion-card-title></ion-label>
-    <ion-label color="primary">NEGOTIABLE:<ion-card-title>{{item.negotiable}}</ion-card-title></ion-label>
-    <ion-label color="primary">BEDS LEFT:</ion-label><ion-card-title>{{item.beds}}</ion-card-title>
-    <ion-label color="primary">WASHROOM:</ion-label> <ion-card-title>{{item.washroom?item.washroom:'No'}}</ion-card-title>
-    <ion-label color="primary">WATER AVAILABLE:</ion-label> <ion-card-title>{{item.water?item.water:'No'}}</ion-card-title>
-    <ion-label color="primary">KITCHEN AVAILABLE:</ion-label> <ion-card-title>{{item.kitchen?item.kitchen:'No'}}</ion-card-title>
+    <ion-chip>PRICE:<ion-label color="tertiary">{{item.price}}</ion-label></ion-chip>
+    <ion-chip>NEGOTIABLE:<ion-label color="primary">{{item.negotiable}}</ion-label></ion-chip>
+    <ion-chip>BEDS LEFT:<ion-label color="primary">{{item.beds}}</ion-label></ion-chip>
+    <ion-chip>WASHROOM:<ion-label color="primary">{{item.washroom?item.washroom:'No'}}</ion-label></ion-chip>
+    <ion-chip >WATER AVAILABLE:<ion-label color="primary">{{item.water?item.water:'No'}}</ion-label></ion-chip>
+    <ion-chip>KITCHEN AVAILABLE:<ion-label color="primary">{{item.kitchen?item.kitchen:'No'}}</ion-label></ion-chip>
   
   </div>
  
   <ion-card-content>
     {{item.details}}
   </ion-card-content>
+ 
 
 </ion-content>

@@ -17,41 +17,50 @@
           </div> -->
         
 
-          <ion-card  class="auth-card ion-margin">
-            <ion-item lines="none" color="light">
+         
+            <ion-item>
               <ion-label position="floating">Firstname</ion-label>
               <ion-input type="text" placeholder="Firstname" formControlName="firstname"></ion-input>
             </ion-item>
-            <ion-item lines="none" color="light">
+            <ion-item>
               <ion-label position="floating">Lastname</ion-label>
               <ion-input type="text" placeholder="lastname" formControlName="lastname"></ion-input>
             </ion-item>
-            <ion-item lines="none" color="light">
+            <ion-item lines="none">
+              <ion-label position="floating">Usertype</ion-label>
+             <ion-select id="water"  placeholder="UserType" formControlName="usertype" >
+              <ion-select-option value="Student">Student</ion-select-option>
+              <ion-select-option value="Agent">Agent</ion-select-option>
+              <ion-select-option value="Hostel Manager">Hostel Manager</ion-select-option>
+            </ion-select>
+            </ion-item>
+            <ion-item>
               <ion-label position="floating">Contact</ion-label>
               <ion-input type="text" placeholder="Contact" formControlName="phonenumber"></ion-input>
             </ion-item>
             
-            <ion-item lines="none" color="light">
-              <ion-label position="floating">Username</ion-label>
-              <ion-input type="text" placeholder="Username" formControlName="username"></ion-input>
+            <ion-item>
+              <ion-label position="floating">Hostel Name</ion-label>
+              <ion-input type="text" placeholder="Hostel Name" formControlName="username"></ion-input>
             </ion-item>
-            <ion-item lines="none" color="light">
+            <ion-item>
               <ion-label position="floating">Email</ion-label>
               <ion-input type="email" placeholder="Email" formControlName="email"></ion-input>
             </ion-item>
-            <ion-item lines="none" color="light" class="ion-no-inner-padding-end">
+            <ion-item class="ion-no-inner-padding-end">
               <ion-label position="floating">Password</ion-label>
-              <ion-input type="password" placeholder="Password" formControlName="password"></ion-input>
+              <ion-input type="password" placeholder="Password" formControlName="password" mode="ios" shape="round"></ion-input>
             </ion-item>
-            <ion-item lines="none" color="light" class="ion-no-inner-padding-end">
+            <ion-item class="ion-no-inner-padding-end">
               <ion-label position="floating">Confirm Password</ion-label>
               <ion-input type="password" placeholder="Confirm Password" formControlName="password_confirm">
               </ion-input>
             </ion-item>
-          </ion-card>
+         
 
-          <ion-button expand="block" class="ion-margin-start ion-margin-end ion-margin-bottom" type="submit"
-            [disabled]="!register.valid">
+          <ion-button expand="block" class="ion-margin-start ion-margin-end ion-margin-bottom" type="submit" 
+          shape="round"
+            [disabled]="!register.valid" mode="ios">
             Sign Up
           </ion-button>
           <span class="ion-margin"></span>

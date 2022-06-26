@@ -12,20 +12,24 @@ import { MessagesPage } from '../messages/messages.page';
   styleUrls: ['./listings.page.scss'],
 })
 export class ListingsPage implements OnInit {
-  loading:boolean = true
+  loading:boolean
   content = []
   user = {};
+  likedpost:boolean = false;
   server
+  filterTerm
   username: any;
   constructor(private storage:Storage,private router:Router,
     private modalController: ModalController,public authservice:AuthService) { 
-   
+   this.user = {
+     username:{},profilePic:{}
+   }
   }
 
   async ngOnInit() {
     
     await this.storage.create();
-    this.loading=false
+    this.loading=true
    this.server = this.authservice.server
    this.getPosts()
   }
@@ -37,9 +41,14 @@ export class ListingsPage implements OnInit {
   liked(post){
     post.pinned =!post.pinned;
     if(post.pinned){
-     post.pinned = true;
+      post.likes.length++;
+    }else{
+      post.likes.length--;
     }
   } 
+
+  
+ 
 
   async gotoEditPage(row: any) {
    // this.func.setStorageJson('item', row || {});
@@ -64,10 +73,15 @@ export class ListingsPage implements OnInit {
       
       this.user=response
       this.username = this.user['username'];
+      console.log(this.user['isVerified'])
           });
+         
         
   }
 
+  call(item){
+    window.open('tel:'+item.user.phonenumber)
+   }
   async gotoMessage(a){
     const modal = await this.modalController.create({
       component:MessagesPage,
@@ -77,13 +91,20 @@ export class ListingsPage implements OnInit {
   }
 
   getPosts(){
+    this.loading = true
     this.authservice.getPosts().subscribe((res:any)=>{
       if(res.message=="Done"){
+        this.loading = false
         console.log(res.posts)
         for(let post of res.posts){
           this.content.push(post)
+          if(post.likes.includes(this.user['id'])===true){
+            this.likedpost = true
+          }else{
+            this.likedpost = false
+          }
         }
-       
+      
       }
       
       

@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient,  HttpErrorResponse,  HttpHeaders } from '@angular/common/http';
 import { Observable, of, throwError } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
+import { Storage } from '@ionic/storage-angular';
 
 @Injectable({
   providedIn: 'root'
@@ -12,9 +13,25 @@ export class ServicesService {
   headers = new HttpHeaders().set('Content-Type', 'application/json');
   api;
   loggedin:boolean = true
-  constructor(private http: HttpClient) {
-
+  username: any;
+  user: any;
+  constructor(private http: HttpClient,private storage: Storage,) {
+    
+    this.getStorage()
    
+}
+
+async getStorage(){
+  await this.storage.create()
+
+  this.storage.get('session_storage').then((response:any)=>{
+    
+    this.user=response
+    this.username = this.user['username'];
+   
+    return this.username
+    
+        });
 }
 
 post(data,file): Observable<any> {

@@ -1,5 +1,7 @@
 import { Injectable } from '@angular/core';
 import { AlertController, LoadingController } from '@ionic/angular';
+import { any } from 'joi';
+import { AuthService } from './auth.service';
 import { ToastService } from './toast.service';
 
 @Injectable({
@@ -8,10 +10,11 @@ import { ToastService } from './toast.service';
 export class LoadingService {
 msg:any
   constructor(public loadingCtrl:LoadingController, 
+    public authservice:AuthService,
     public alertController: AlertController,
     public toast:ToastService) 
   {
-
+    this.msg = authservice.handleError
    }
    async presentLoading(){
     let loading = await this.loadingCtrl.create({
@@ -34,6 +37,9 @@ msg:any
     buttons: [
       {
         text: 'OKAY',
+      },
+      {
+        text: 'CANCEL',
       }
     ]
   }).then(res => {

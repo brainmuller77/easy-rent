@@ -4,9 +4,9 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { IonicModule } from '@ionic/angular';
 
-import { AddListingPageRoutingModule } from './add-listing-routing.module';
+import { InboxPageRoutingModule } from './inbox-routing.module';
 
-import { AddListingPage } from './add-listing.page';
+import { InboxPage } from './inbox.page';
 
 @NgModule({
   imports: [
@@ -14,8 +14,8 @@ import { AddListingPage } from './add-listing.page';
     FormsModule,
     ReactiveFormsModule,
     IonicModule,
-    AddListingPageRoutingModule
+    InboxPageRoutingModule
   ],
-  declarations: [AddListingPage]
+  declarations: [InboxPage]
 })
-export class AddListingPageModule {}
+export class InboxPageModule {}

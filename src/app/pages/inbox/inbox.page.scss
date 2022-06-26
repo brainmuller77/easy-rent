@@ -1,0 +1,26 @@
+.unread {
+    color: #c0c0c0 !important;
+  }
+
+  .read {
+    color: #4aa1f3;
+  }
+
+  .sender {
+    color: #4aa1f3;
+  }
+
+  .msg {
+    background: #4aa1f3;
+    border-radius: 0.8em; //12px
+    -moz-border-radius: 0.8em; //12px
+    -webkit-border-radius: 0.8em; //12px
+    color: #ffffff;
+    font-weight: bold;
+    line-height: 1.5em;
+    text-align: center;
+    width: 25px;
+    height: 25px;
+    font-size: 10px;
+    padding-top: -50px !important;
+  }

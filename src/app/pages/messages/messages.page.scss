@@ -97,6 +97,25 @@ ion-content,
             }
         }
 
+        .img-bg {
+            width: 100%;
+            max-width: 155px;
+            min-width: 155px;
+            margin-right: 20px;
+            height: 155px;
+            border-radius: 4px;
+            background: var(--bg-color);
+            display: flex;
+            align-items: center;
+
+            img {
+                height: 85px;
+                margin: auto;
+                display: block;
+                width: auto;
+            }
+        }
+
         .time {
             position: relative;
             right: 0;

@@ -1,14 +1,16 @@
 <ion-header>
   <ion-toolbar>
     <ion-item>
-    <ion-title>Welcome @{{user.username}}</ion-title>
+    <ion-title><ion-note>{{user['username']}}</ion-note></ion-title>
     <ion-buttons slot="start">
       <ion-menu-button></ion-menu-button>
     </ion-buttons>
     <ion-buttons slot="end">
+      <ion-item>
      <ion-avatar>
-       <img [src]="server+user.profilePic">
+       <img [src]="server+user['profilePic']">
      </ion-avatar>
+    </ion-item>
       </ion-buttons>
     </ion-item>
   </ion-toolbar>
@@ -44,14 +46,14 @@
               <ion-buttons slot="start">
            
                 <ion-button color="medium" (click)="liked(a)">
-                  <ion-icon slot="start" size="medium" name= "heart-outline" color="danger"></ion-icon>
-                  <ion-icon slot="start" size="medium" name= "heart" color="danger"></ion-icon>
+                  <ion-icon slot="start" size="medium" *ngIf="!a.pinned" name= "heart-outline" color="danger"></ion-icon>
+                  <ion-icon slot="start" size="medium" *ngIf="a.pinned" name= "heart" color="danger"></ion-icon>
                   
-                  <small>{{'post.likes'}}</small>
+                  <small>{{a.likes.length}}</small>
                   
                 </ion-button> 
-                <ion-button><ion-icon name="call"></ion-icon></ion-button> 
-                <ion-button *ngIf="a.username != username" (click)="gotoMessage(a)"><ion-icon name="chatbox-outline"></ion-icon></ion-button>
+                <ion-button (click)="call(a)"><ion-icon name="call"></ion-icon></ion-button> 
+                <ion-button *ngIf="a.user != null && a.user.username != username" (click)="gotoMessage(a)"><ion-icon name="chatbox-outline"></ion-icon></ion-button>
                 </ion-buttons>
              </ion-item>
            </ion-card>
@@ -63,7 +65,7 @@
     
 
 </ion-row>
-<ion-fab class="animate__animated animate__zoomInUp" vertical="bottom" horizontal="end" slot="fixed">
+<ion-fab *ngIf="user['isVerified']==true && user['usertype'] != 'Student'" class="animate__animated animate__zoomInUp" vertical="bottom" horizontal="end" slot="fixed">
   <ion-fab-button (click)="add_room()">
       <span>+</span>
   </ion-fab-button>

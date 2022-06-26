@@ -43,12 +43,11 @@ export class SignInPage implements OnInit {
   await this.storage.create();
     }
 
-    onlogin() {
+    async onlogin() {
       
-      this.loadService.presentLoading();
+     // this.authService.presentLoading();
 
-      this.authService.login(this.login.value).subscribe((res: any) => {
-      
+   this.authService.login(this.login.value).subscribe((res:any)=>{
       if(res['message']==="Login successful"){
         this.loadService.dismiss()
         this.toastService.presentToast("Login Success");
@@ -56,17 +55,13 @@ export class SignInPage implements OnInit {
         this.storage.set('user', res.token)
           this.storage.set('session_storage',res.user);
           this.router.navigate(['listings']);
-       // })
     
-      }else{
-        this.toastService.presentToast(""+res['message'])
       }
-      if(!res){
-        this.loadService.alert(this.authService.handleError,this.authService.handleError(res));
       
-      }
-
-    })
+      
+      
+    
+  })
 
 }
 }

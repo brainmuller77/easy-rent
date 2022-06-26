@@ -5,6 +5,8 @@ import { ToastService } from 'src/app/services/toast.service';
 import { Storage } from '@ionic/storage-angular';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import * as $ from 'jquery';
+import { FormBuilder, FormGroup } from '@angular/forms';
+import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-add-listing',
@@ -17,6 +19,10 @@ export class AddListingPage implements OnInit {
   file = []
   video = []
   v: any = {}
+  fileArr = [];
+  imgArr = [];
+  fileObj = [];
+  form: FormGroup;
   imageSrc: string | ArrayBuffer;
   itemname;price;negotiable;washroom;kitchen;
   details;title;water;beds
@@ -25,6 +31,8 @@ export class AddListingPage implements OnInit {
 
   constructor(private toast:ToastService,
     private authservice:AuthService,
+    private sanitizer: DomSanitizer,
+    public fb: FormBuilder,
     private storage: Storage,
     private loading:LoadingService) { 
     this.v = {
@@ -33,58 +41,81 @@ export class AddListingPage implements OnInit {
     this.files = {
       images:  []
     }
+   
   }
   user = []
  async ngOnInit() {
+  this.form = this.fb.group({
+    avatar: [null],
+    id:[''],
+    username:[''],
+    itemname:[''],
+    water:[''],
+    price:[''],
+    negotiable:[''],
+    washroom:[''],
+    kitchen:[''],
+    details:[''],
+    title:[''],
+    beds:['']
+  })
     await this.storage.create();
 
     this.storage.get("session_storage").then((res:any)=>{
       this.user=res
-      console.log(this.user)
+     // console.log(this.user)
       this.itemname = this.user['username'];
       
     })
   }
 
    async save(){
-    if(this.itemname === "" && this.files.length == 0){
-      this.toast.presentToast("Add a file or name")
-    }else if(this.price ===""){
-      this.toast.presentToast("Please Add price")
-    }else if (!this.negotiable && !this.water && !this.beds && !this.title){
-      this.toast.presentToast("Please enter required fields")
-    }else{
-     
-        this.loading.Loading();
-        let body = {
-          username:this.user,
-          item:this.itemname,
-          water:this.water,
-          price:this.price,
-          negotiable:this.negotiable,
-          washrooms:this.washroom,
-          kitchen:this.kitchen,
-          details:this.details,
-          title:this.title,
-          beds:this.beds
-        }
-        this.authservice.post(body).subscribe((response:any)=>{
-         if(response.message==="Post created"){
-           if(this.files.images.length >0){
-            this.authservice.upload(this.files.images).subscribe((res:any)=>{
-              console.log(res)
-            })
-           }
-          
-           this.loading.dismiss();
-           console.log(response.post)
-         }
-  
-        })
-      
+    if(this.form.valid)
+    if(this.form.get('avatar').value === null){
+      return this.toast.presentToast("Please Add At Least One Image");
     }
+    // console.log(this.form.value)
+
+     this.form.get('username').setValue(this.user)
+        this.loading.Loading();
+            this.authservice.addFiles(this.form.value).subscribe((res:any)=>{
+             // console.log(res)
+              if(res.message=="Done upload"){
+                this.loading.dismiss()
+              }
+              //console.log(this.form.value)
+              ;
+            })
+           
+ }
+
+   // Clean Url
+   sanitize(url: string) {
+    return this.sanitizer.bypassSecurityTrustUrl(url);
   }
 
+
+  upload(e) {
+    const fileListAsArray = Array.from(e);
+    fileListAsArray.forEach((item, i) => {
+      const file = (e as HTMLInputElement);
+      const url = URL.createObjectURL(file[i]);
+      this.imgArr.push(url);
+      this.fileArr.push({ item, url: url });
+      console.log(this.fileArr[0].item)
+    })
+    this.fileArr.forEach((item) => {
+      this.fileObj.push(item.item)
+
+    })
+    // Set files form control
+    this.form.patchValue({
+      avatar: this.fileObj
+    })
+    this.form.get('avatar').updateValueAndValidity()
+    //console.log(this.fileObj)
+    this.show != this.show
+  }
 
 
    
@@ -151,16 +182,16 @@ export class AddListingPage implements OnInit {
    //filechanged
    fileChangeEvent(event: any) {
     for (var i = 0; i < event.target.files.length; i++) {
-    this.files.push(event.target.files[i]);
+    this.file.push(event.target.files[i]);
     const file = event.target.files[i];
 
     const reader = new FileReader();
     reader.onload = () => {
-      this.v['images_links']=this.v.images_links.concat(reader.result);
+      this.image=reader.result;
     }
     reader.readAsDataURL(file);
     }
-    console.log(this.files)
+    console.log(this.file)
   
 }
 
@@ -182,12 +213,13 @@ processImage(e: any) {
   console.log(this.files.images)
 } 
 
-
+  show:boolean=true
   deleteImage(i: number) {
-   
-  this.v['images'] = this.v.images.split(',').filter((img: any, a: number) => a !== i).join(',');
   
-   this.v['images_links'] = this.v.images_links.filter((img: any, a: number) => a !== i); 
+ this.fileArr[i]['url']= null
+ this.fileArr[i]['item']= []
+ this.show = false
+   
   }
 
   deletevideo(i: number){

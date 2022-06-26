@@ -43,6 +43,14 @@ const routes: Routes = [
   {
     path: 'favourites',
     loadChildren: () => import('./pages/favourites/favourites.module').then( m => m.FavouritesPageModule)
+  },
+  {
+    path: 'inbox',
+    loadChildren: () => import('./pages/inbox/inbox.module').then( m => m.InboxPageModule)
+  },
+  {
+    path: 'calls',
+    loadChildren: () => import('./pages/calls/calls.module').then( m => m.CallsPageModule)
   }
 ];
 

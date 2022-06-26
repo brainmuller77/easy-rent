@@ -8,40 +8,85 @@
 </ion-header>
 
 <ion-content>
-  <ion-row class="input-position">
-         
-    <ion-col>
+  <form [formGroup]="form">
+  <ion-row class="input-position">   
+    <ion-col class="text_box">
       <span class = "image-upload">
         <label for="file-input">    
-          <ion-icon slot="icon-only" name="camera" size="large"  color="medium" ></ion-icon>
+          <ion-chip>Add Image<ion-icon slot="icon-only" name="camera" size="large"  color="medium" ></ion-icon>
+          </ion-chip>
         </label>
     
-        <input id="file-input" type="file" accept="image/*" multiple="multiple" (change)=" processImage($event)" style="display:none;"/>
-      <span>Add Image</span>
+        <input id="file-input" type="file" accept="image/*" name="avatars"
+        #fileField multiple
+        (change)="upload($any($event).target.files)" style="display:none;"/>
+      
        </span>
       
     </ion-col>
     </ion-row>
     <ion-row class="input-position">
-         
-      <ion-col>
-        <span class="image-upload">
-          <label for="filePhoto">            
-            <ion-icon slot="icon-only" name="videocam" size="large"  color="medium" ></ion-icon>
-          </label>
-      
-          <input id="filePhoto" type="file" accept="video/*" (change)="onFileChange($event)" style="display:none;"/>
+      <ion-col size="4">
+        <div class="img-bg" *ngFor="let file of fileArr; let i = index">
+          <img [src]="sanitize(file['url'])" alt="" />
         
-         </span>
-  
-      </ion-col>
+        <div class="ion-text-center" style="color: red;" (click)="deleteImage(i)">
+            <small>X</small>
+        </div>
+        </div>
+    </ion-col>
+    <!--   <div class="container fileUploadWrapper">
+       
+          <div class="row">
+           Progress Bar 
+            <div class="col-md-12" *ngIf="progress">
+              <div class="progress form-group">
+                <div
+                  class="progress-bar progress-bar-striped bg-success"
+                  role="progressbar"
+                  [style.width.%]="progress"
+                ></div>
+              </div>
+            </div>
+            <div class="col-md-12">
+              <div
+                class="fileupload"
+                appDragDropFileUpload
+                (click)="fileField.click()"
+                (fileDropped)="upload($event)"
+              >
+                <span class="ddinfo">Choose a file or drag here</span>
+                <input
+                  type="file"
+                  name="avatars"
+                  #fileField
+                  (change)="upload($any($event).target.files)"
+                  hidden
+                  multiple
+                />
+              </div>
+            </div>
+            <div class="col-md-12">
+              <div class="image-list" *ngFor="let file of fileArr; let i = index">
+                <div class="profile">
+                  <img [src]="sanitize(file['url'])" alt="" />
+                </div>
+                <p>{{ file.item.name }}</p>
+              </div>
+              <p class="message">{{ msg }}</p>
+            </div>
+          </div>
+        
+      </div> 
+   
       </ion-row>
     <ion-row>
-      <ion-col size="4" *ngFor="let image of v.images_links; let i = index;">
-        <div class="img-bg">
-          <img id="blah" [src]="image"/>
+     
+      <ion-col size="4" *ngIf="image">
+        <div class="img-bg" *ngFor="let file of fileArr; let i = index">
+          <img [src]="sanitize(file['url'])" alt="" />
         </div>
-        <div class="ion-text-center" style="color: red;" (click)="deleteImage(i)">
+        <div class="ion-text-center" style="color: red;" (click)="deleteImage(image)">
             <small>X</small>
         </div>
     </ion-col>
@@ -53,27 +98,27 @@
       <div class="ion-text-center" style="color: red;" (click)="deletevideo(i)">
           <small>X</small>
       </div>
-  </ion-col>
+  </ion-col> -->
    
         </ion-row>
         <ion-item lines="none">
           <ion-label position="floating">Hostel name</ion-label>
-          <ion-input type="text" id="itemname" placeholder="Item name" [(ngModel)]="itemname"></ion-input>
+          <ion-input type="text" id="itemname" placeholder="Item name" formControlName="itemname" [(ngModel)]="itemname"></ion-input>
         </ion-item>
 
         <ion-item lines="none">
           <ion-label position="floating">Title</ion-label>
-          <ion-input type="text" id="title" placeholder="Title" [(ngModel)]="title"></ion-input>
+          <ion-input type="text" id="title" placeholder="Title" formControlName="title"></ion-input>
         </ion-item>
 
         <ion-item lines="none">
           <ion-label position="floating">Price</ion-label>
-          <ion-input type="number" id="price" placeholder="price" [(ngModel)]="price"></ion-input>
+          <ion-input type="number" id="price" placeholder="price" formControlName="price"></ion-input>
         </ion-item>
 
         <ion-item lines="none">
           <ion-label position="floating">Negotiable</ion-label>
-         <ion-select id="negotiable"  placeholder="Negotiable"  [(ngModel)]="negotiable" >
+         <ion-select id="negotiable"  placeholder="Negotiable"  formControlName="negotiable" >
           <ion-select-option value="Yes">Yes</ion-select-option>
           <ion-select-option value="No">No</ion-select-option>
       </ion-select>
@@ -81,7 +126,7 @@
 
     <ion-item lines="none">
       <ion-label position="floating">Kitchen Available</ion-label>
-     <ion-select id="kitchen"  placeholder="Kitchen"  [(ngModel)]="kitchen" >
+     <ion-select id="kitchen"  placeholder="Kitchen"  formControlName="kitchen" >
       <ion-select-option value="Yes">Yes</ion-select-option>
       <ion-select-option value="No">No</ion-select-option>
   </ion-select>
@@ -89,7 +134,7 @@
 
 <ion-item lines="none">
   <ion-label position="floating">Water Available</ion-label>
- <ion-select id="water"  placeholder="Water"  [(ngModel)]="water" >
+ <ion-select id="water"  placeholder="Water"  formControlName="water" >
   <ion-select-option value="Yes">Yes</ion-select-option>
   <ion-select-option value="No">No</ion-select-option>
 </ion-select>
@@ -97,7 +142,7 @@
 
     <ion-item lines="none">
       <ion-label position="floating">Number of Beds</ion-label>
-     <ion-select  id="beds" placeholder="Negotiable"  [(ngModel)]="beds" >
+     <ion-select  id="beds" placeholder="Negotiable"  formControlName="beds" >
       <ion-select-option value="1">1</ion-select-option>
       <ion-select-option value="2">2</ion-select-option>
       <ion-select-option value="3">3</ion-select-option>
@@ -108,7 +153,7 @@
 <ion-item lines="none">
   <ion-label position="floating">Number of People To Use Washroom</ion-label>
 
- <ion-select  id="washroom" placeholder="Washroom"  [(ngModel)]="washroom" >
+ <ion-select  id="washroom" placeholder="Washroom"  formControlName="washroom" >
   <ion-select-option value="1">1</ion-select-option>
   <ion-select-option value="2">2</ion-select-option>
   <ion-select-option value="3">3</ion-select-option>
@@ -123,11 +168,12 @@
 
         <ion-item lines="none" color="light">
           <ion-label position="floating">Details</ion-label>
-          <ion-textarea  id= "details" placeholder="Details" [(ngModel)]="details"></ion-textarea>
+          <ion-textarea  id= "details" placeholder="Details" formControlName="details"></ion-textarea>
         </ion-item>
 
         <ion-button expand="block" shape="round" type="submit" (click)="save()" id ="imagePostButton"
         color="tertiary">
        Save
       </ion-button>
+    </form>
 </ion-content>

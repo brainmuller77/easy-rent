@@ -16,11 +16,13 @@ import { BehaviorSubject, SubscriptionLike } from 'rxjs';
 export class MessagesPage implements OnInit {
   message: FormGroup;
   load:boolean;
+  returned:boolean
   server
   postData = {
     message:""
   }
   item
+  date
   title
   chatsmessages = []
   user: any;
@@ -38,19 +40,22 @@ export class MessagesPage implements OnInit {
     private route: ActivatedRoute,
     private loading: LoadingService,
     private modalController: ModalController,
-    private authservice: AuthService,
+    public authservice: AuthService,
     public alertController: AlertController,
-    private fb: FormBuilder,) { }
+    private fb: FormBuilder,) { 
+      
+    }
 
   async ngOnInit() {
     this.storage.get('session_storage').then((response:any)=>{
-    
       this.user=response
       this.username = this.user['username'];
       this.userid = this.user['_id']
-      console.log(this.user)
+     
+      console.log(this.user._id)
       
           });
+          console.log(this.item)
     
     this.message = this.fb.group({
       messageControl: this.fb.control('', [
@@ -64,10 +69,22 @@ export class MessagesPage implements OnInit {
    this.server = this.authservice.server
 }
 
+gotoEditPage(item){
+
+}
+
 
   getMessages(){
     this.authservice.GetAllMessages(this.user._id,this.item._id).subscribe((res:any)=>{
-      console.log(res.messages.message)
+      if(res.message=="Messages returned"){
+        this.returned = true;
+        for(let message of res.messages.message){ 
+         this.date = message.createdAt;
+      this.chatsmessages.push(message)
+
+        }
+      }
+      console.log(this.chatsmessages)
     })
 
   }
@@ -121,23 +138,44 @@ logScrollEnd() {
   this.scrolling.next(false);
 }
 
+dateToFromNowDaily( myDate ) {
 
+  // get from-now for this date
+  var fromNow = moment( myDate ).fromNow();
+
+  // ensure the date is displayed with today and yesterday
+  return moment( myDate ).calendar( null, {
+      // when the date is closer, specify custom values
+      lastWeek: '[Last] dddd',
+      lastDay:  '[Yesterday]',
+      sameDay:  '[Today]',
+      nextDay:  '[Tomorrow]',
+      nextWeek: 'dddd',
+      // when the date is further away, use from-now functionality             
+      sameElse: function () {
+          return "[" + fromNow + "]";
+      }
+  });
+}
 
   dismiss(){
     this.modalController.dismiss()
   }
 
   sendMessage(){
+    this.load = true
     let body = {
       message:this.postData.message,
       senderId:this.user,
-      receiverId:this.item._id,
+      receiverId:this.item,
       sendername:this.username,
       receivername:this.item.username
       
     }
     this.authservice.SendMessage(body).subscribe((res:any)=>{
       if(res.message=="Sent"){
+        this.load = false
+        this.returned = false
         this.chatsmessages.push({
           firstname:this.user['firstName'],
           lastname:this.user['lastName'],
@@ -149,6 +187,7 @@ logScrollEnd() {
         })
         console.log(res)
         console.log(this.chatsmessages)
+        this.postData.message = ''
 
          // scroll to bottom
       setTimeout(() => {
