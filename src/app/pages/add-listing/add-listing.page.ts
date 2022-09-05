@@ -5,7 +5,7 @@ import { ToastService } from 'src/app/services/toast.service';
 import { Storage } from '@ionic/storage-angular';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import * as $ from 'jquery';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
@@ -48,45 +48,72 @@ export class AddListingPage implements OnInit {
   this.form = this.fb.group({
     avatar: [null],
     id:[''],
-    username:[''],
-    itemname:[''],
-    water:[''],
-    price:[''],
-    negotiable:[''],
-    washroom:[''],
-    kitchen:[''],
-    details:[''],
-    title:[''],
-    beds:['']
+    username:['',[
+      Validators.required,
+      Validators.maxLength(150)]],
+    itemname:['',[
+      Validators.required,
+      Validators.maxLength(150)]],
+    water:['',[
+      Validators.required,
+      Validators.maxLength(150)]],
+    price:['',[
+      Validators.required,
+      Validators.maxLength(150)]],
+    negotiable:['',[
+      Validators.required,
+      Validators.maxLength(150)]],
+    washroom:['',[
+      Validators.required,
+      Validators.maxLength(150)]],
+    kitchen:['',[
+      Validators.required,
+      Validators.maxLength(150)]],
+    details:['',[
+      Validators.required,
+      Validators.maxLength(150)]],
+    title:['',[
+      Validators.required,
+      Validators.maxLength(150)]],
+    beds:['',[
+      Validators.required,
+      Validators.maxLength(150)]]
   })
     await this.storage.create();
 
     this.storage.get("session_storage").then((res:any)=>{
       this.user=res
      // console.log(this.user)
-      this.itemname = this.user['username'];
+      this.form.get("itemname").value == this.user['username'];
       
     })
   }
 
    async save(){
-    if(this.form.valid)
+  
     if(this.form.get('avatar').value === null){
       return this.toast.presentToast("Please Add At Least One Image");
-    }
+    }else{
     // console.log(this.form.value)
 
      this.form.get('username').setValue(this.user)
         this.loading.Loading();
             this.authservice.addFiles(this.form.value).subscribe((res:any)=>{
-             // console.log(res)
-              if(res.message=="Done upload"){
+              
+              if(res){
                 this.loading.dismiss()
+                this.toast.presentToast(res.message)
+                
               }
-              //console.log(this.form.value)
-              ;
+              setTimeout(() => {
+               this.loading.dismiss()
+               //this.toast.presentToast(res.message)
+               this.form.reset()
+               }, 5000);
+               console.log(res.message)
             })
-           
+          }
+          
  }
 
    // Clean Url
@@ -215,9 +242,8 @@ processImage(e: any) {
 
   show:boolean=true
   deleteImage(i: number) {
-  
- this.fileArr[i]['url']= null
- this.fileArr[i]['item']= []
+  const a = this.fileArr.indexOf(i);
+  this.fileArr.splice(a,1)
  this.show = false
    
   }

@@ -14,6 +14,8 @@ import { ToastService } from './toast.service';
 export class AuthService {
   API_URL: string = 'http://localhost:3007/api/chatapp';
   server: string = 'http://localhost:3007/uploads';
+// API_URL: string = 'https://stunning-glacier-bay-40095.herokuapp.com/api/chatapp';
+ // server: string = 'https://stunning-glacier-bay-40095.herokuapp.com/uploads';
  // headers = new HttpHeaders().set('Content-Type', 'application/json','Authorization': `Bearer ${this.auth_token}`);
   currentUser = {};
   auth_token = localStorage.getItem('access_token');

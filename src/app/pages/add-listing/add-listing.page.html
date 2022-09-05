@@ -29,7 +29,6 @@
       <ion-col size="4">
         <div class="img-bg" *ngFor="let file of fileArr; let i = index">
           <img [src]="sanitize(file['url'])" alt="" />
-        
         <div class="ion-text-center" style="color: red;" (click)="deleteImage(i)">
             <small>X</small>
         </div>
