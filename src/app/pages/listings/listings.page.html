@@ -1,7 +1,7 @@
 <ion-header>
   <ion-toolbar>
     <ion-item>
-    <ion-title><ion-note>{{user['username']}}</ion-note></ion-title>
+    <ion-title><ion-note *ngIf="loggedIn">{{user['username']}}</ion-note></ion-title>
     <ion-buttons slot="start">
       <ion-menu-button></ion-menu-button>
     </ion-buttons>
@@ -19,6 +19,7 @@
 <ion-content>
   <div *ngIf="loading" class="ion-text-center text-muted">
     <ion-spinner name ="crescent"></ion-spinner>
+    
     </div>
   <div *ngIf="!loading && content.length === 0" class="ion-text-center text-muted">
    
@@ -39,7 +40,8 @@
              <ion-card-header class="ion-text-uppercase">{{a.itemname}}</ion-card-header>
              <img src={{a.Image[0]}} alt="{{a.title}}" (error)="authservice.imgError($event)"/>
              <ion-card-title>{{a.title}}</ion-card-title>
-             <p>Price: {{a.price}}</p> <p>Beds Left: {{a.beds}}</p>
+             <ion-card-subtitle>Price: {{a.price}}</ion-card-subtitle> 
+             <p>Beds Left: {{a.beds}}</p>
              <p >Negotiable: {{a.negotiable}} </p>
             </div>
              <ion-item> 
@@ -52,7 +54,8 @@
                   <small>{{a.likes.length}}</small>
                   
                 </ion-button> 
-                <ion-button (click)="call(a)"><ion-icon name="call"></ion-icon></ion-button> 
+                <a href="tel:{{a.phone}}"> 
+                  <ion-icon name="call"></ion-icon></a>
                 <ion-button *ngIf="a.user != null && a.user.username != username" (click)="gotoMessage(a)"><ion-icon name="chatbox-outline"></ion-icon></ion-button>
                 </ion-buttons>
              </ion-item>

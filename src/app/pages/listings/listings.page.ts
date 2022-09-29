@@ -18,6 +18,7 @@ export class ListingsPage implements OnInit {
   likedpost:boolean = false;
   server
   filterTerm
+  loggedIn:boolean
   username: any;
   constructor(private storage:Storage,private router:Router,
     private modalController: ModalController,public authservice:AuthService) { 
@@ -27,6 +28,7 @@ export class ListingsPage implements OnInit {
   }
 
   async ngOnInit() {
+    this.authservice.isLoggedIn 
     
     await this.storage.create();
     this.loading=true
@@ -93,19 +95,23 @@ export class ListingsPage implements OnInit {
   getPosts(){
     this.loading = true
     this.authservice.getPosts().subscribe((res:any)=>{
-      if(res.message=="Done"){
-        this.loading = false
-        console.log(res.posts)
-        for(let post of res.posts){
-          this.content.push(post)
-          if(post.likes.includes(this.user['id'])===true){
-            this.likedpost = true
-          }else{
-            this.likedpost = false
+      setTimeout(() => {
+        if(res.message=="Done"){
+          this.loading = false
+          console.log(res.posts)
+          for(let post of res.posts){
+            this.content.push(post)
+            if(post.likes.includes(this.user['id'])===true){
+              this.likedpost = true
+            }else{
+              this.likedpost = false
+            }
           }
+        
         }
+        this.loading = false
+      },15000);
       
-      }
       
       
     })

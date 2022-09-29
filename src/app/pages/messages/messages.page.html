@@ -5,9 +5,9 @@
         <ion-icon name="close" color="success"  slot="start"></ion-icon>
       </ion-button>
       <ion-avatar>
-        <div class="img-bg">
+       
           <img src={{item.Image[0]}} alt="{{item.title}}" (error)="authservice.imgError($event)"/>
-        </div>
+      
       </ion-avatar>
     </ion-buttons>
     <ion-title>{{item.username}}</ion-title>
@@ -27,7 +27,7 @@
 <ion-item-group class="messages-item-group" *ngFor="let chat of chatsmessages">
 
   <!-- Date message divider -->
-  <ion-item-divider sticky class="message-divider" [ngClass]="{'scrolling': pageScrolling}">
+  <ion-item-divider class="message-divider" [ngClass]="{'scrolling': pageScrolling}">
     <ion-label>
       {{date}}
     </ion-label>
